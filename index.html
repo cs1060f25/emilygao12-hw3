@@ -88,23 +88,12 @@
   </head>
   <body>
     <main>
-      <div class="badge">🗒️ Notes</div>
-      <h1>Home</h1>
-      <p>Choose an action below to create a note or view your archive.</p>
+      <h1>Journal</h1>
 
-    <div class="actions">
-      <button id="btnText">New Text Note</button>
-      <button id="btnAudio" class="secondary">New Audio Note</button>
-      <a id="linkArchive" class="secondary" href="/archive/">Go to Archive</a>
-    </div>
-
-      <div id="textBox" class="note-box">
-        <textarea id="textInput" placeholder="Write your note..."></textarea>
-        <div class="actions" style="grid-template-columns: auto auto; justify-content: start;">
-          <button id="btnSaveText">Save</button>
-          <button id="btnCancelText" class="secondary">Cancel</button>
-        </div>
-        <div id="msg" class="msg"></div>
+      <div class="actions">
+        <a id="linkText" href="/text/">New Text Note</a>
+        <button id="btnAudio" class="secondary">New Audio Note</button>
+        <a id="linkArchive" class="secondary" href="/archive/">Go to Archive</a>
       </div>
       <footer>
         Notes are saved locally in your browser and shared across pages on this site.
@@ -112,39 +101,9 @@
     </main>
     <script>
       (function(){
-        const btnText = document.getElementById('btnText');
         const btnAudio = document.getElementById('btnAudio');
-        const linkArchive = document.getElementById('linkArchive');
-        const textBox = document.getElementById('textBox');
-        const textInput = document.getElementById('textInput');
-        const btnSaveText = document.getElementById('btnSaveText');
-        const btnCancelText = document.getElementById('btnCancelText');
-        const msg = document.getElementById('msg');
 
         let isRecording = false;
-
-        function showMsg(s){ msg.textContent = s; }
-
-        btnText.addEventListener('click', () => {
-          textBox.style.display = 'block';
-          textInput.focus();
-        });
-
-        btnCancelText.addEventListener('click', () => {
-          textBox.style.display = 'none';
-          textInput.value = '';
-          showMsg('');
-        });
-
-        btnSaveText.addEventListener('click', () => {
-          const content = textInput.value.trim();
-          if(!content){ showMsg('Please enter some text.'); return; }
-          const ts = window.Notes.formatTimestamp(new Date());
-          window.Notes.addNote({ type: 'text', content, timestamp: ts });
-          textInput.value = '';
-          textBox.style.display = 'none';
-          showMsg('Saved!');
-        });
 
         btnAudio.addEventListener('click', () => {
           if(!isRecording){
