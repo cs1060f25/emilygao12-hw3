@@ -68,6 +68,9 @@
         border: 1px solid var(--line);
         cursor: pointer;
         transition: transform 120ms ease, box-shadow 120ms ease, background 200ms ease;
+        display: block;                /* make anchors behave like buttons */
+        width: 100%;                   /* full width for visual centering */
+        text-align: center;            /* center label text */
       }
       .actions a.secondary, .actions button.secondary {
         background: linear-gradient(90deg, var(--acc1), #fff);
