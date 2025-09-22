@@ -1,45 +1,33 @@
-# emilygao12-hw3
-
-This repository now includes a minimal, production-ready static site that prints "Hello, World!" and is deployable on Vercel with zero configuration.
-
-## Deploying to Vercel (Dashboard)
-1. Push this repository to GitHub (or GitLab/Bitbucket).
-2. Go to https://vercel.com/new and import the repository.
-3. Keep the default settings (Framework Preset: "Other").
-4. Click "Deploy". Vercel will build and serve `index.html` as the homepage.
-
-## Deploying to Vercel (CLI)
-If you prefer the CLI:
-
-```bash
-# 1) Install the Vercel CLI (once)
-npm i -g vercel
-
-# 2) From the project directory, link and deploy
-vercel  # follow prompts to link or create a new project
-
-# 3) For a production deploy
-vercel --prod
-```
-
-## Local Preview
-You can serve the static site locally with any static server, or use Vercel Dev:
-
-```bash
-# Using Vercel Dev (after installing vercel CLI)
-vercel dev
-
-# Or using Python's simple HTTP server
-python3 -m http.server 5173
-# Then open http://localhost:5173 in your browser
-```
-
-## Project Structure
-- `index.html` — Static homepage with a styled "Hello, World!" message.
-- `vercel.json` — Minimal config to ensure all routes fall back to `index.html`.
-- `hello_world.py` — A simple Python hello world script (not used by Vercel, kept for reference).
-- `README.md` — This file.
-
-## Notes
-- Because this project is a static site, there is no build step required.
-- You can add assets (images, CSS, JS) next to `index.html` and they will be served automatically.
+# Journal Prototype
+ 
+Author: Emily Gao (GitHub: [emilygao12](https://github.com/emilygao12))
+ 
+Live site: https://emilygao12-hw3.vercel.app
+ 
+## Overview
+Journal Prototype is a lightweight, static web app deployed on Vercel. It lets you create quick text notes, simulate simple audio notes, and browse an archive with basic search. Data persists locally in your browser using `localStorage`.
+ 
+## Implemented Features
+- Text notes
+  - Create a new text note at `/text/` and save it to your journal.
+- Audio notes (simulated)
+  - Toggle the “New Audio Note” button on the Home page to simulate recording and save a placeholder audio entry with a timestamp.
+- Archive with search and throwback
+  - Archive page (`/archive/`) lists all notes in reverse chronological order.
+  - Exact search tab filters by substring match.
+  - Smart search tab displays a friendly banner: “Not implemented yet—coming soon!”
+  - A “throwback” card shows a randomly selected past note as a memory.
+ 
+## Not Implemented Yet (Planned / Future)
+- Smart search (semantic/fuzzy/AI-assisted search)
+- Real audio capture and playback
+- Editing/deleting notes
+- Cloud sync and authentication
+ 
+## Deployment (Vercel)
+This project is configured as a static site and deploys on Vercel.
+ 
+Current deployment: https://emilygao12-hw3.vercel.app
+ 
+## Team PRD
+PRD link: https://docs.google.com/document/d/1nNX6mI4i-YOOCPmL9tHF9bsjQs3fS574rfZ0-T07gkU/edit?usp=sharing
