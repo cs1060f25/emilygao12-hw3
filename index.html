@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <title>Hello, World! — Vercel Deploy</title>
+    <title>Notes — Home</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
@@ -29,7 +29,7 @@
         place-items: center;
       }
       main {
-        width: min(680px, 92vw);
+        width: min(760px, 92vw);
         background: linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02));
         border: 1px solid rgba(255,255,255,0.12);
         border-radius: 16px;
@@ -54,35 +54,100 @@
         color: var(--text);
         margin-bottom: 14px;
       }
-      .links { display: flex; gap: 10px; margin-top: 18px; }
-      .links a {
+      .actions { display: grid; grid-template-columns: 1fr; gap: 12px; margin-top: 18px; }
+      .actions a, .actions button {
         text-decoration: none;
         color: var(--bg);
         background: linear-gradient(90deg, var(--accent), var(--accent-2));
-        padding: 10px 14px; border-radius: 10px; font-weight: 600;
+        padding: 14px 18px; border-radius: 12px; font-weight: 700; font-size: 18px;
         box-shadow: 0 6px 18px rgba(34, 211, 238, 0.25);
+        border: none; cursor: pointer;
       }
-      .links a.secondary {
+      .actions a.secondary, .actions button.secondary {
         background: transparent; color: var(--text);
         border: 1px solid rgba(255,255,255,0.14);
         box-shadow: none;
       }
       code { background: rgba(255,255,255,0.08); padding: 2px 6px; border-radius: 6px; }
       footer { margin-top: 20px; font-size: 12px; color: var(--muted); text-align: center; }
+      .note-box { margin-top: 16px; display: none; }
+      .note-box textarea { width: 100%; min-height: 120px; padding: 12px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.14); background: rgba(0,0,0,0.2); color: var(--text); }
+      .msg { margin-top: 10px; color: var(--muted); font-size: 14px; min-height: 18px; }
     </style>
+    <script defer src="/scripts.js"></script>
   </head>
   <body>
     <main>
-      <div class="badge">🚀 Ready for Vercel</div>
-      <h1>Hello, World! 👋</h1>
-      <p>This is a minimal, zero‑config static site you can deploy on <strong>Vercel</strong>.</p>
-      <div class="links">
-        <a href="https://vercel.com/new" target="_blank" rel="noreferrer">Deploy</a>
-        <a class="secondary" href="https://vercel.com/docs" target="_blank" rel="noreferrer">Docs</a>
+      <div class="badge">🗒️ Notes</div>
+      <h1>Home</h1>
+      <p>Choose an action below to create a note or view your archive.</p>
+
+      <div class="actions">
+        <button id="btnText">New Text Note</button>
+        <button id="btnAudio" class="secondary">New Audio Note</button>
+        <a id="linkArchive" class="secondary" href="/archive/">Go to Archive</a>
+      </div>
+
+      <div id="textBox" class="note-box">
+        <textarea id="textInput" placeholder="Write your note..."></textarea>
+        <div class="actions" style="grid-template-columns: auto auto; justify-content: start;">
+          <button id="btnSaveText">Save</button>
+          <button id="btnCancelText" class="secondary">Cancel</button>
+        </div>
+        <div id="msg" class="msg"></div>
       </div>
       <footer>
-        Tip: After deploying, your site will be available at a Vercel URL. You can add a custom domain anytime.
+        Notes are saved locally in your browser and shared across pages on this site.
       </footer>
     </main>
+    <script>
+      (function(){
+        const btnText = document.getElementById('btnText');
+        const btnAudio = document.getElementById('btnAudio');
+        const linkArchive = document.getElementById('linkArchive');
+        const textBox = document.getElementById('textBox');
+        const textInput = document.getElementById('textInput');
+        const btnSaveText = document.getElementById('btnSaveText');
+        const btnCancelText = document.getElementById('btnCancelText');
+        const msg = document.getElementById('msg');
+
+        let isRecording = false;
+
+        function showMsg(s){ msg.textContent = s; }
+
+        btnText.addEventListener('click', () => {
+          textBox.style.display = 'block';
+          textInput.focus();
+        });
+
+        btnCancelText.addEventListener('click', () => {
+          textBox.style.display = 'none';
+          textInput.value = '';
+          showMsg('');
+        });
+
+        btnSaveText.addEventListener('click', () => {
+          const content = textInput.value.trim();
+          if(!content){ showMsg('Please enter some text.'); return; }
+          const ts = window.Notes.formatTimestamp(new Date());
+          window.Notes.addNote({ type: 'text', content, timestamp: ts });
+          textInput.value = '';
+          textBox.style.display = 'none';
+          showMsg('Saved!');
+        });
+
+        btnAudio.addEventListener('click', () => {
+          if(!isRecording){
+            isRecording = true;
+            btnAudio.textContent = 'Stop Recording';
+          } else {
+            isRecording = false;
+            btnAudio.textContent = 'New Audio Note';
+            const ts = window.Notes.formatTimestamp(new Date());
+            window.Notes.addNote({ type: 'audio', content: `[Audio Note] recorded at ${ts}`, timestamp: ts });
+          }
+        });
+      })();
+    </script>
   </body>
 </html>
