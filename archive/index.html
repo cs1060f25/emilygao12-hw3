@@ -50,6 +50,14 @@
       li { padding: 12px; border: 1px solid rgba(255,255,255,0.12); border-radius: 10px; margin-bottom: 10px; background: rgba(255,255,255,0.04); }
       .meta { color: var(--muted); font-size: 12px; margin-top: 6px; }
       .empty { color: var(--muted); margin-top: 12px; }
+      .search { margin-top: 14px; }
+      .tabs { display: inline-flex; gap: 8px; margin-bottom: 10px; }
+      .tab { padding: 6px 10px; border-radius: 999px; border: 1px solid rgba(255,255,255,0.14); background: transparent; color: var(--text); cursor: pointer; font-weight: 600; }
+      .tab.active { background: rgba(255,255,255,0.08); }
+      .search input { width: 100%; padding: 10px 12px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.14); background: rgba(0,0,0,0.2); color: var(--text); }
+      .banner { margin-top: 10px; padding: 10px 12px; border-radius: 10px; background: rgba(34,211,238,0.1); border: 1px solid rgba(34,211,238,0.35); color: var(--text); }
+      .throwback { margin-top: 16px; padding: 12px; border: 1px dashed rgba(255,255,255,0.25); border-radius: 12px; background: rgba(255,255,255,0.04); }
+      .throwback h3 { margin: 0 0 6px; }
     </style>
     <script defer src="/scripts.js"></script>
   </head>
@@ -60,35 +68,110 @@
       <div class="actions">
         <a class="btn secondary" href="/">← Back to Home</a>
       </div>
+      <section class="search">
+        <div class="tabs">
+          <button id="tabExact" class="tab active" type="button">Exact</button>
+          <button id="tabSmart" class="tab" type="button">Smart</button>
+        </div>
+        <input id="searchInput" type="text" placeholder="Search notes..." aria-label="Search notes" />
+        <div id="smartBanner" class="banner" style="display:none">Smart search not implemented yet.</div>
+      </section>
+      <section id="throwback" class="throwback" style="display:none">
+        <h3>Here's a memory from 1 year ago!</h3>
+        <div id="throwbackContent"></div>
+        <div id="throwbackMeta" class="meta"></div>
+      </section>
       <section>
         <ul id="list"></ul>
         <div id="empty" class="empty" style="display:none">No notes yet. Create one on the Home page.</div>
       </section>
       <footer style="margin-top: 16px; font-size: 12px; color: var(--muted);">Notes are stored in your browser's localStorage.</footer>
+      <div class="actions" style="justify-content: flex-end;">
+        <a class="btn secondary" href="/">← Back to Home</a>
+      </div>
     </main>
     <script>
       (function(){
         const list = document.getElementById('list');
         const empty = document.getElementById('empty');
-        const notes = window.Notes.getNotes();
-        if(!notes.length){
-          empty.style.display = 'block';
-          return;
+        const searchInput = document.getElementById('searchInput');
+        const tabExact = document.getElementById('tabExact');
+        const tabSmart = document.getElementById('tabSmart');
+        const smartBanner = document.getElementById('smartBanner');
+        const throwback = document.getElementById('throwback');
+        const throwbackContent = document.getElementById('throwbackContent');
+        const throwbackMeta = document.getElementById('throwbackMeta');
+
+        let mode = 'exact'; // 'exact' | 'smart'
+
+        const allNotes = (window.Notes.getNotes() || []).slice().sort((a,b)=> (b.id||0) - (a.id||0));
+
+        function renderThrowback(){
+          if(allNotes.length === 0){ throwback.style.display = 'none'; return; }
+          const randomIndex = Math.floor(Math.random() * allNotes.length);
+          const pick = allNotes[randomIndex];
+          throwbackContent.textContent = pick.content;
+          throwbackMeta.textContent = `${(pick.type||'TEXT').toUpperCase()} • ${pick.timestamp}`;
+          throwback.style.display = 'block';
         }
-        const frag = document.createDocumentFragment();
-        notes.forEach(n => {
-          const li = document.createElement('li');
-          const title = document.createElement('div');
-          title.textContent = n.type === 'audio' ? n.content : n.content;
-          const meta = document.createElement('div');
-          meta.className = 'meta';
-          meta.textContent = `${n.type.toUpperCase()} • ${n.timestamp}`;
-          li.appendChild(title);
-          li.appendChild(meta);
-          frag.appendChild(li);
+
+        function renderList(notes){
+          list.innerHTML = '';
+          if(!notes.length){
+            empty.style.display = 'block';
+            return;
+          } else {
+            empty.style.display = 'none';
+          }
+          const frag = document.createDocumentFragment();
+          notes.forEach(n => {
+            const li = document.createElement('li');
+            const title = document.createElement('div');
+            title.textContent = n.content;
+            const meta = document.createElement('div');
+            meta.className = 'meta';
+            meta.textContent = `${(n.type||'TEXT').toUpperCase()} • ${n.timestamp}`;
+            li.appendChild(title);
+            li.appendChild(meta);
+            frag.appendChild(li);
+          });
+          list.appendChild(frag);
+        }
+
+        function applyFilter(){
+          const q = searchInput.value.trim();
+          if(mode === 'smart'){
+            smartBanner.style.display = 'block';
+            // For now, smart mode does not filter — show all.
+            renderList(allNotes);
+            return;
+          } else {
+            smartBanner.style.display = 'none';
+          }
+          if(!q){ renderList(allNotes); return; }
+          const lower = q.toLowerCase();
+          const filtered = allNotes.filter(n => String(n.content||'').toLowerCase().includes(lower));
+          renderList(filtered);
+        }
+
+        tabExact.addEventListener('click', () => {
+          mode = 'exact';
+          tabExact.classList.add('active');
+          tabSmart.classList.remove('active');
+          applyFilter();
         });
-        list.appendChild(frag);
-      })();
+        tabSmart.addEventListener('click', () => {
+          mode = 'smart';
+          tabSmart.classList.add('active');
+          tabExact.classList.remove('active');
+          applyFilter();
+        });
+        searchInput.addEventListener('input', applyFilter);
+
+        // Initial render
+        renderThrowback();
+        applyFilter();
+        })();
     </script>
   </body>
 </html>
