@@ -9,54 +9,63 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
     <style>
       :root {
-        --bg: #0f172a;
-        --panel: #0b1220;
-        --text: #e2e8f0;
-        --muted: #94a3b8;
-        --accent: #22d3ee;
-        --accent-2: #a78bfa;
+        /* Pastel, whimsical palette to match Home */
+        --bg: #fff7f0;            /* soft peach */
+        --panel: #ffffff;         /* paper */
+        --ink: #3a3a3a;           /* text */
+        --muted: #8c8c8c;         /* muted text */
+        --acc1: #ffd6e7;          /* pink pastel */
+        --acc2: #d9f2ff;          /* blue pastel */
+        --acc3: #e8ffd6;          /* green pastel */
+        --line: #f0e7de;          /* soft border */
+        --shadow: 0 10px 30px rgba(0,0,0,0.08);
       }
       * { box-sizing: border-box; }
       html, body { height: 100%; }
       body {
         margin: 0;
         font-family: "Inter", system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
-        background: radial-gradient(1200px 800px at 80% -10%, rgba(34, 211, 238, 0.15), transparent 60%),
-                    radial-gradient(1000px 700px at -10% 110%, rgba(167, 139, 250, 0.15), transparent 60%),
-                    var(--bg);
-        color: var(--text);
+        background:
+          radial-gradient(800px 500px at 20% -10%, rgba(255, 214, 231, 0.5), transparent 60%),
+          radial-gradient(900px 600px at 110% 110%, rgba(217, 242, 255, 0.5), transparent 60%),
+          var(--bg);
+        color: var(--ink);
         display: grid;
         place-items: center;
       }
       main {
         width: min(760px, 92vw);
-        background: linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02));
-        border: 1px solid rgba(255,255,255,0.12);
-        border-radius: 16px;
+        background: var(--panel);
+        border: 1px solid var(--line);
+        border-radius: 20px;
         padding: 28px 28px 22px;
-        box-shadow: 0 10px 30px rgba(0,0,0,0.35);
-        backdrop-filter: blur(6px);
+        box-shadow: var(--shadow);
       }
       h1 { margin: 0 0 8px; font-size: clamp(28px, 4vw, 44px); }
       .actions { display: flex; gap: 10px; margin-top: 16px; }
       .btn, a.btn {
         text-decoration: none;
-        color: var(--bg);
-        background: linear-gradient(90deg, var(--accent), var(--accent-2));
-        padding: 10px 14px; border-radius: 10px; font-weight: 700; border: none; cursor: pointer;
+        color: var(--ink);
+        background: linear-gradient(90deg, var(--acc2), var(--acc3));
+        padding: 12px 16px; border-radius: 14px; font-weight: 800; border: 1px solid var(--line); cursor: pointer;
+        box-shadow: var(--shadow);
+        transition: transform 120ms ease, box-shadow 120ms ease, background 200ms ease;
       }
-      .btn.secondary { background: transparent; color: var(--text); border: 1px solid rgba(255,255,255,0.14); }
+      .btn.secondary { background: linear-gradient(90deg, var(--acc1), #fff); }
+      .btn:hover { transform: translateY(-1px); box-shadow: 0 14px 28px rgba(0,0,0,0.12); }
+      .btn:active { transform: translateY(0); box-shadow: var(--shadow); }
       ul { list-style: none; padding: 0; margin: 18px 0 0; }
-      li { padding: 12px; border: 1px solid rgba(255,255,255,0.12); border-radius: 10px; margin-bottom: 10px; background: rgba(255,255,255,0.04); }
+      li { padding: 12px; border: 1px solid var(--line); border-radius: 14px; margin-bottom: 10px; background: #fff; box-shadow: var(--shadow); }
       .meta { color: var(--muted); font-size: 12px; margin-top: 6px; }
       .empty { color: var(--muted); margin-top: 12px; }
       .search { margin-top: 14px; }
       .tabs { display: inline-flex; gap: 8px; margin-bottom: 10px; }
-      .tab { padding: 6px 10px; border-radius: 999px; border: 1px solid rgba(255,255,255,0.14); background: transparent; color: var(--text); cursor: pointer; font-weight: 600; }
-      .tab.active { background: rgba(255,255,255,0.08); }
-      .search input { width: 100%; padding: 10px 12px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.14); background: rgba(0,0,0,0.2); color: var(--text); }
-      .banner { margin-top: 10px; padding: 10px 12px; border-radius: 10px; background: rgba(34,211,238,0.1); border: 1px solid rgba(34,211,238,0.35); color: var(--text); }
-      .throwback { margin-top: 16px; padding: 12px; border: 1px dashed rgba(255,255,255,0.25); border-radius: 12px; background: rgba(255,255,255,0.04); }
+      .tab { padding: 6px 10px; border-radius: 999px; border: 1px solid var(--line); background: #fff; color: var(--ink); cursor: pointer; font-weight: 700; box-shadow: var(--shadow); transition: transform 120ms ease; }
+      .tab.active { background: linear-gradient(90deg, var(--acc1), var(--acc2)); }
+      .tab:hover { transform: translateY(-1px); }
+      .search input { width: 100%; padding: 10px 12px; border-radius: 12px; border: 1px solid var(--line); background: #fff; color: var(--ink); }
+      .banner { margin-top: 10px; padding: 10px 12px; border-radius: 12px; background: linear-gradient(90deg, var(--acc2), var(--acc1)); border: 1px solid var(--line); color: var(--ink); font-weight: 600; }
+      .throwback { margin-top: 16px; padding: 12px; border: 1px dashed var(--line); border-radius: 14px; background: #fff; box-shadow: var(--shadow); }
       .throwback h3 { margin: 0 0 6px; }
     </style>
     <script defer src="/scripts.js"></script>
@@ -74,7 +83,7 @@
           <button id="tabSmart" class="tab" type="button">Smart</button>
         </div>
         <input id="searchInput" type="text" placeholder="Search notes..." aria-label="Search notes" />
-        <div id="smartBanner" class="banner" style="display:none">Smart search not implemented yet.</div>
+        <div id="smartBanner" class="banner" style="display:none">Not implemented yet—coming soon!</div>
       </section>
       <section id="throwback" class="throwback" style="display:none">
         <h3>Here's a memory from 1 year ago!</h3>
@@ -171,7 +180,7 @@
         // Initial render
         renderThrowback();
         applyFilter();
-        })();
+      })();
     </script>
   </body>
 </html>

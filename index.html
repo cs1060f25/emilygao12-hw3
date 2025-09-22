@@ -9,33 +9,37 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
     <style>
       :root {
-        --bg: #0f172a;
-        --panel: #0b1220;
-        --text: #e2e8f0;
-        --muted: #94a3b8;
-        --accent: #22d3ee;
-        --accent-2: #a78bfa;
+        /* Pastel, whimsical palette */
+        --bg: #fff7f0;            /* soft peach */
+        --panel: #ffffff;         /* paper */
+        --ink: #3a3a3a;           /* text */
+        --muted: #8c8c8c;         /* muted text */
+        --acc1: #ffd6e7;          /* pink pastel */
+        --acc2: #d9f2ff;          /* blue pastel */
+        --acc3: #e8ffd6;          /* green pastel */
+        --line: #f0e7de;          /* soft border */
+        --shadow: 0 10px 30px rgba(0,0,0,0.08);
       }
       * { box-sizing: border-box; }
       html, body { height: 100%; }
       body {
         margin: 0;
         font-family: "Inter", system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
-        background: radial-gradient(1200px 800px at 80% -10%, rgba(34, 211, 238, 0.15), transparent 60%),
-                    radial-gradient(1000px 700px at -10% 110%, rgba(167, 139, 250, 0.15), transparent 60%),
-                    var(--bg);
-        color: var(--text);
+        background:
+          radial-gradient(800px 500px at 20% -10%, rgba(255, 214, 231, 0.5), transparent 60%),
+          radial-gradient(900px 600px at 110% 110%, rgba(217, 242, 255, 0.5), transparent 60%),
+          var(--bg);
+        color: var(--ink);
         display: grid;
         place-items: center;
       }
       main {
         width: min(760px, 92vw);
-        background: linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02));
-        border: 1px solid rgba(255,255,255,0.12);
-        border-radius: 16px;
+        background: var(--panel);
+        border: 1px solid var(--line);
+        border-radius: 20px;
         padding: 28px 28px 22px;
-        box-shadow: 0 10px 30px rgba(0,0,0,0.35);
-        backdrop-filter: blur(6px);
+        box-shadow: var(--shadow);
       }
       h1 {
         margin: 0 0 8px;
@@ -48,30 +52,33 @@
         display: inline-flex; align-items: center; gap: 8px;
         padding: 8px 12px;
         border-radius: 999px;
-        background: rgba(255,255,255,0.06);
-        border: 1px solid rgba(255,255,255,0.12);
-        font-weight: 600;
-        color: var(--text);
+        background: linear-gradient(90deg, var(--acc1), var(--acc2));
+        border: 1px solid var(--line);
+        font-weight: 700;
+        color: var(--ink);
         margin-bottom: 14px;
       }
       .actions { display: grid; grid-template-columns: 1fr; gap: 12px; margin-top: 18px; }
       .actions a, .actions button {
         text-decoration: none;
-        color: var(--bg);
-        background: linear-gradient(90deg, var(--accent), var(--accent-2));
-        padding: 14px 18px; border-radius: 12px; font-weight: 700; font-size: 18px;
-        box-shadow: 0 6px 18px rgba(34, 211, 238, 0.25);
-        border: none; cursor: pointer;
+        color: var(--ink);
+        background: linear-gradient(90deg, var(--acc2), var(--acc3));
+        padding: 14px 18px; border-radius: 14px; font-weight: 800; font-size: 18px;
+        box-shadow: var(--shadow);
+        border: 1px solid var(--line);
+        cursor: pointer;
+        transition: transform 120ms ease, box-shadow 120ms ease, background 200ms ease;
       }
       .actions a.secondary, .actions button.secondary {
-        background: transparent; color: var(--text);
-        border: 1px solid rgba(255,255,255,0.14);
-        box-shadow: none;
+        background: linear-gradient(90deg, var(--acc1), #fff);
       }
-      code { background: rgba(255,255,255,0.08); padding: 2px 6px; border-radius: 6px; }
+      .actions a:hover, .actions button:hover { transform: translateY(-1px); box-shadow: 0 14px 28px rgba(0,0,0,0.12); }
+      .actions a:active, .actions button:active { transform: translateY(0); box-shadow: var(--shadow); }
+
+      code { background: #fff3; padding: 2px 6px; border-radius: 6px; }
       footer { margin-top: 20px; font-size: 12px; color: var(--muted); text-align: center; }
       .note-box { margin-top: 16px; display: none; }
-      .note-box textarea { width: 100%; min-height: 120px; padding: 12px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.14); background: rgba(0,0,0,0.2); color: var(--text); }
+      .note-box textarea { width: 100%; min-height: 120px; padding: 12px; border-radius: 12px; border: 1px solid var(--line); background: #fff; color: var(--ink); }
       .msg { margin-top: 10px; color: var(--muted); font-size: 14px; min-height: 18px; }
     </style>
     <script defer src="/scripts.js"></script>
@@ -82,11 +89,11 @@
       <h1>Home</h1>
       <p>Choose an action below to create a note or view your archive.</p>
 
-      <div class="actions">
-        <button id="btnText">New Text Note</button>
-        <button id="btnAudio" class="secondary">New Audio Note</button>
-        <a id="linkArchive" class="secondary" href="/archive/">Go to Archive</a>
-      </div>
+    <div class="actions">
+      <button id="btnText">New Text Note</button>
+      <button id="btnAudio" class="secondary">New Audio Note</button>
+      <a id="linkArchive" class="secondary" href="/archive/">Go to Archive</a>
+    </div>
 
       <div id="textBox" class="note-box">
         <textarea id="textInput" placeholder="Write your note..."></textarea>
